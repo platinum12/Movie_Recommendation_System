@@ -1,0 +1,92 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<!-- <property name="url" value="jdbc:mysql://aa1hs073xfsirhz.cu7vxesd69z9.us-east-1.rds.amazonaws.com:3306/cmpe_datamining" />
+		<property name="username" value="root" />
+		<property name="password" value="password" /> -->
+	    <property name="url" value="jdbc:mysql://localhost:3306/cmpe_datamining" />
+	    <property name="username" value="dbuser" />
+		<property name="password" value="myshastrasql" />
+		
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mappingResources">
+			<list>
+				<value>orm/Users.hbm.xml</value>
+				<value>orm/UserRoles.hbm.xml</value>
+				<value>orm/MovieInfo.hbm.xml</value>
+				<value>orm/UserMovies.hbm.xml</value>
+				<value>orm/MovieRecommendation.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="userDao" class="edu.sjsu.cmpe.datamining.dao.UserDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="movieInfoDao" class="edu.sjsu.cmpe.datamining.dao.MovieInfoDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userMoviesDao" class="edu.sjsu.cmpe.datamining.dao.UserMoviesDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="movieRecoDao" class="edu.sjsu.cmpe.datamining.dao.MovieRecommendationDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="myUserDetailsService" class="edu.sjsu.cmpe.datamining.service.MyUserDetailsService">
+		<property name="userDao" ref="userDao" />
+	</bean>
+	
+	<bean id="movieRecoService" class="edu.sjsu.cmpe.datamining.service.MovieRecoService">
+		<property name="userDao" ref="userDao" />
+		<property name="movieInfoDao" ref="movieInfoDao" />
+		<property name="userMoviesDao" ref="userMoviesDao" />
+		<property name="movieRecoDao" ref="movieRecoDao" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+
+ 
+	<aop:config>
+		<aop:pointcut id="userServicePointCut"
+			expression="execution(* edu.sjsu.cmpe.datamining.service.*Service.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="userServicePointCut" />
+	</aop:config>
+
+</beans>

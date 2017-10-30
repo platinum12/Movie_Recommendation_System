@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="edu.sjsu.cmpe.datamining.model.MovieInfo" table="movie_info" catalog="cmpe_datamining">
+        <id name="id" type="java.lang.Integer">
+            <column name="movie_id"/>
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="255" not-null="true" />
+        </property>
+        <property name="releaseDate" type="string">
+            <column name="release_date" length="50" not-null="true" />
+        </property>
+        <property name="movieLink" type="string">
+            <column name="movie_link" length="1024" not-null="true" />
+        </property>
+        
+        <property name="genreUnknown" type="java.lang.Integer">
+            <column name="genre_unknown" not-null="true" />
+        </property>
+        <property name="genreAction" type="java.lang.Integer">
+            <column name="genre_action" not-null="true" />
+        </property>
+        <property name="genreAdventure" type="java.lang.Integer">
+            <column name="genre_adventure" not-null="true" />
+        </property>
+        <property name="genreAnimation" type="java.lang.Integer">
+            <column name="genre_animation" not-null="true" />
+        </property>
+        <property name="genreChildrens" type="java.lang.Integer">
+            <column name="genre_childrens" not-null="true" />
+        </property>
+        <property name="genreComedy" type="java.lang.Integer">
+            <column name="genre_comedy" not-null="true" />
+        </property>
+        <property name="genreCrime" type="java.lang.Integer">
+            <column name="genre_crime" not-null="true" />
+        </property>
+        <property name="genreDocumentary" type="java.lang.Integer">
+            <column name="genre_documentary" not-null="true" />
+        </property>
+        <property name="genreDrama" type="java.lang.Integer">
+            <column name="genre_drama" not-null="true" />
+        </property>
+        <property name="genreFantasy" type="java.lang.Integer">
+            <column name="genre_fantasy" not-null="true" />
+        </property>
+        <property name="genreFilmNoir" type="java.lang.Integer">
+            <column name="genre_filmnoir" not-null="true" />
+        </property>
+        <property name="genreHorror" type="java.lang.Integer">
+            <column name="genre_horror" not-null="true" />
+        </property>
+        <property name="genreMusical" type="java.lang.Integer">
+            <column name="genre_musical" not-null="true" />
+        </property>
+        <property name="genreMystery" type="java.lang.Integer">
+            <column name="genre_mystery" not-null="true" />
+        </property>
+        <property name="genreRomance" type="java.lang.Integer">
+            <column name="genre_romance" not-null="true" />
+        </property>
+        <property name="genreSciFi" type="java.lang.Integer">
+            <column name="genre_scifi" not-null="true" />
+        </property>
+        <property name="genreThriller" type="java.lang.Integer">
+            <column name="genre_thriller" not-null="true" />
+        </property>
+        <property name="genreWar" type="java.lang.Integer">
+            <column name="genre_war" not-null="true" />
+        </property>
+        <property name="genreWestern" type="java.lang.Integer">
+            <column name="genre_western" not-null="true" />
+        </property>
+      
+        <property name="avgRating" type="float">
+            <column name="avg_rating" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
